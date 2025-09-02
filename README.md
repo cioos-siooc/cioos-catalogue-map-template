@@ -41,7 +41,7 @@ You don’t need to run a local build. Pushing changes is enough to trigger a ne
 
 2) Add assets under `public/`:
 
-- Place images in folders like `public/Images/...` and reference them in `config.yaml` with absolute paths such as `/Images/OGSL_NoTag.png`.
+- Place images in folders like `public/Images/...` and reference them in `config.yaml` with absolute paths such as `/Images/cioos-national_EN_W.svg-.png`.
 - Ensure paths are case-sensitive and exist (e.g., `favicon` defaults to `/images/favicon.ico`; create `public/images/` and put your file there or update the path).
 
 3) Commit and deploy:
