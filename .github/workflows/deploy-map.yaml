@@ -1,0 +1,30 @@
+name: Deploy Map
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+permissions: # Add this block to set permissions
+  id-token: write
+  contents: read
+  pages: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Map
+        uses: ogsl-slgo/ogsl-nextjs-map-template@feature/add-github-composite-action
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
