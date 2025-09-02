@@ -24,6 +24,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy Map
-        uses: cioos-siooc/cioos-catalogue-map-base
+        uses: cioos-siooc/cioos-catalogue-map-base@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
