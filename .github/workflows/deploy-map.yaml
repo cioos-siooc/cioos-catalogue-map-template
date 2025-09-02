@@ -24,6 +24,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy Map
-        uses: ogsl-slgo/ogsl-nextjs-map-template@feature/add-github-composite-action
+        uses: cioos-siooc/cioos-catalogue-map-base
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
