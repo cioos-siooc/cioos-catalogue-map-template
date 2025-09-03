@@ -1,13 +1,5 @@
----
-name: Initialize Catalogue Map
-about: Set up and publish a new CKAN map site using this template
-title: "Init: <site name>"
-labels: ["init", "deployment"]
-assignees: ""
----
 
-# Initialize a new Catalogue Map
-
+# Initialize a new Catalogue Ma
 Thanks for creating a new catalogue map. Follow this checklist to configure, deploy, and verify your site.
 
 ## Overview
@@ -26,7 +18,7 @@ Deployment is handled by a GitHub Action that builds with your config and assets
 
 Workflow: `.github/workflows/deploy-map.yaml`
 
-- Triggers on pushes to `main` or manual dispatched via [Gitub Action page](../../actions/workflows/deploy-map.yaml).
+- Triggers on pushes to `main` or manual dispatched via [Gitub Action page](../actions/workflows/deploy-map.yaml) (see `Run workflow` button).
 - Uses GitHub Pages with OIDC (permissions: `id-token: write`, `pages: write`, `contents: read`).
 - Deploys via a composite action (`cioos-siooc/cioos-catalogue-map-base@main`) that:
   - Consumes your `config.yaml` and assets under `public/`.
@@ -39,7 +31,6 @@ You don’t need to run a local build. Pushing changes triggers deployment.
 
 Please fill in:
 
-- Site name: <!-- e.g., SLGO Catalogue Map -->
 - CKAN Catalogue URL (`catalogue_url`): <!-- e.g., https://catalogue.ogsl.ca -->
 - Default base query (`base_query`): <!-- optional filter string -->
 - Default language (`default_language`): <!-- en or fr -->
@@ -73,7 +64,7 @@ Please fill in:
   - [ ] Paths in `config.yaml` match file names exactly (case-sensitive).
   - [ ] Favicon available at the configured path (e.g., `public/images/favicon.ico`).
 - [ ] Pages configuration:
-  - [ ] GitHub Pages is enabled under Settings → Pages.
+  - [ ] GitHub Pages is enabled under [Settings → Pages](../settings/page): Select `Source = Github Action`
   - [ ] Build and deployment source is set to "GitHub Actions".
 - [ ] Branch strategy:
   - [ ] Use `development` for test deployments if desired.
