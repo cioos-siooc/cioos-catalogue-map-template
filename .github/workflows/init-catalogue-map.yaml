@@ -29,10 +29,19 @@ jobs:
       - name: Format readme with repository name
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           sed -i 's|# cioos-catalogue-map-template|# ${{ github.repository }}|g' README.md
-          PAGES_URL=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.html_url')
-          sed -i "s|https://cioos-siooc.github.io/cioos-catalogue-map-template|$PAGES_URL|g" README.md
+          # Try to read the Pages URL; if Pages isn't enabled yet, fall back to the default URL.
+          set +e
+          PAGES_URL=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.html_url' 2>/dev/null)
+          set -e
+          if [ -z "$PAGES_URL" ]; then
+            OWNER=${GITHUB_REPOSITORY_OWNER}
+            REPO=${GITHUB_REPOSITORY#*/}
+            PAGES_URL="https://${OWNER}.github.io/${REPO}"
+          fi
+          sed -i "s|https://cioos-siooc.github.io/cioos-catalogue-map-template|${PAGES_URL}|g" README.md
       - name: Cleanup repository initialization files
         run: |
           rm -rf .github/workflows/init-catalogue-map.yaml
