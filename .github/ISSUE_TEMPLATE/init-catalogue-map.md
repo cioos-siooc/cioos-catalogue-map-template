@@ -1,47 +1,104 @@
-# Initialize
+---
+name: Initialize Catalogue Map
+about: Set up and publish a new CKAN map site using this template
+title: "Init: <site name>"
+labels: ["init", "deployment"]
+assignees: ""
+---
 
-Thanks for creating this new catalogue map, to be fully completed the following steps are required:
+# Initialize a new Catalogue Map
+
+Thanks for creating a new catalogue map. Follow this checklist to configure, deploy, and verify your site.
 
 ## Overview
 
-This repository is a thin template to deploy a CIOOS Catalogue Map from configuration and static assets only. At build time, it uses the shared base project (cioos-catalogue-map-base) and produces a static site that is published to GitHub Pages. You customize the resulting map by editing `config.yaml` and by adding logos/images to `public/`.
+This template deploys a CIOOS Catalogue Map from configuration and static assets only. At build time, it uses a shared base project (cioos-catalogue-map-base) and publishes a static site to GitHub Pages. Customize via `config.yaml` and assets in `public/`.
 
-No application code lives here—deployment is handled entirely by a GitHub Action that pulls the base and builds with your configuration and assets.
+Deployment is handled by a GitHub Action that builds with your config and assets—no local build required.
 
 ## What’s in this repo
 
-- `config.yaml`: The full configuration for your map (catalogue endpoint, map center/zoom, languages, titles/metadata, theme colors, logos, basemaps, favicon, etc.).
-- `public/`: Static assets that become available at the site root (e.g., `/Images/...`, `/images/favicon.ico`). Place your logos and any content here.
-- `.github/workflows/deploy-map.yaml`: The workflow that builds and publishes the site to GitHub Pages on push.
+- `config.yaml`: Full map configuration (catalogue endpoint, map center/zoom, languages, titles/metadata, theme colors, logos, basemaps, favicon, etc.).
+- `public/`: Static assets served from the site root (e.g., `/Images/...`, `/images/favicon.ico`). Add logos and images here.
+- `.github/workflows/deploy-map.yaml`: Workflow that builds and publishes to GitHub Pages on push.
 
-### How deployment works (GitHub Action)
+## How deployment works (GitHub Action)
 
-The workflow `.github/workflows/deploy-map.yaml`:
+Workflow: `.github/workflows/deploy-map.yaml`
 
-- Triggers on pushes to `main`.
+- Triggers on pushes to `main` and `development`.
 - Uses GitHub Pages with OIDC (permissions: `id-token: write`, `pages: write`, `contents: read`).
-- Deploys via a composite action (`cioos-siooccioos-catalogue-map-base`) that:
-	- Consumes your `config.yaml` and files under `public/`.
-	- Builds the site using the base project (cioos-catalogue-map-base).
-	- Publishes the output to the `github-pages` environment. The final URL is exposed as `steps.deployment.outputs.page_url`.
+- Deploys via a composite action (`ogsl-slgo/ogsl-nextjs-map-template@feature/add-github-composite-action`) that:
+  - Consumes your `config.yaml` and assets under `public/`.
+  - Builds the site using the shared base project.
+  - Publishes to the `github-pages` environment. The Pages URL is exposed as `steps.deployment.outputs.page_url`.
 
-You don’t need to run a local build. Pushing changes is enough to trigger a new deployment.
+You don’t need to run a local build. Pushing changes triggers deployment.
 
-## Todos
+## Pre-configuration info
 
- - [ ] Update README.md
- - [ ] Update the config.yaml page:
-   - [ ] `catalogue_url`: Base URL of a CIOOS CKAN catalogue API to query.
-   - [ ] `base_query`: Optional default query/filters applied to catalogue searches.
-   - [ ] `metadata` titles: titles in browser search.
-   - [ ] `map.center` and `map.zoom`: Initial map view.
-   - [ ] `theme`:
-     - [ ] `primary_color`: Main color use for interface
-     - [ ] `secondary_color`: Accent color used on links/buttons, etc.
-   - [ ] `favicon`: Path to your favicon (e.g., `/images/favicon.ico`).
- - [ ] About pages:
-   - [ ] [public/about.md](../../../public/about.md)
-   - [ ] [public/a-propos.md](../../../public/a-propos.md)
- - [ ] Activate Github Pages
- - [ ] Confirm Catalogue Map is now available.
- - [ ] *optional* Redirect Map to external URL
+Please fill in:
+
+- Site name: <!-- e.g., SLGO Catalogue Map -->
+- CKAN Catalogue URL (`catalogue_url`): <!-- e.g., https://catalogue.ogsl.ca -->
+- Default base query (`base_query`): <!-- optional filter string -->
+- Default language (`default_language`): <!-- en or fr -->
+- Map center (`map.center`): <!-- [lat, lon] e.g., [66.485, -62.48] -->
+- Map zoom (`map.zoom`): <!-- e.g., 5 -->
+- Primary color (`theme.primary_color`): <!-- e.g., #3b82f6 -->
+- Accent color (`theme.accent_color`): <!-- e.g., #F6AF3B -->
+- Favicon path (`favicon`): <!-- e.g., /images/favicon.ico -->
+- Main logo(s) (path + mode/lang + alt): <!-- e.g., /Images/Logo.png -->
+- Footer/bottom logo(s): <!-- list paths and variants -->
+
+## Checklist
+
+- [ ] Update `README.md` with site-specific details (optional).
+- [ ] Edit `config.yaml`:
+  - [ ] `catalogue_url` set to your CKAN catalogue base URL.
+  - [ ] `base_query` set or left empty as needed.
+  - [ ] `default_language` set.
+  - [ ] `title` and `metadata` updated in both languages.
+  - [ ] `map.center` and `map.zoom` adjusted.
+  - [ ] `theme.light`/`theme.dark` background colors set as desired.
+  - [ ] `theme.primary_color` and `theme.accent_color` set.
+  - [ ] `favicon` path valid under `public/`.
+  - [ ] `main_logo` and `bottom_logo` entries complete with correct paths, `mode` (light/dark), optional `lang`, and `alt` text.
+  - [ ] `basemaps` list reviewed; tile URLs, attribution, and `checked`/`maxZoom` set.
+- [ ] About pages:
+  - [ ] Update `public/about.md` (English) if desired.
+  - [ ] Update `public/a-propos.md` (French) if desired.
+- [ ] Add/verify assets in `public/`:
+  - [ ] Logo/image files added under `public/Images/` (or similar).
+  - [ ] Paths in `config.yaml` match file names exactly (case-sensitive).
+  - [ ] Favicon available at the configured path (e.g., `public/images/favicon.ico`).
+- [ ] Pages configuration:
+  - [ ] GitHub Pages is enabled under Settings → Pages.
+  - [ ] Build and deployment source is set to "GitHub Actions".
+- [ ] Branch strategy:
+  - [ ] Use `development` for test deployments if desired.
+  - [ ] Merge to `main` for production deployments.
+- [ ] Push changes to trigger deployment.
+
+## Post-deployment verification
+
+- [ ] Workflow run completed successfully (Actions tab).
+- [ ] Pages URL is available and loads without errors.
+- [ ] Map loads and shows expected basemap(s).
+- [ ] Dataset search returns expected CKAN results.
+- [ ] Logos and favicon render correctly (light/dark modes where applicable).
+- [ ] Titles, metadata, and language toggles behave as expected.
+
+Deployment URL: <https://cioos-siooc.github.io/cioos-catalogue-map-template>
+
+## Optional: custom domain / redirect
+
+- [ ] Configure a custom domain in Settings → Pages (adds a `CNAME`).
+- [ ] Update DNS (A/AAAA or CNAME) to point to GitHub Pages.
+- [ ] Verify HTTPS is enabled and the custom URL serves the site.
+
+## Definition of done
+
+- A successful deployment is visible at the expected URL (GitHub Pages or custom domain).
+- Core configuration is set (catalogue URL, map center/zoom, theme, logos, basemaps).
+- Assets load correctly and links are valid.
