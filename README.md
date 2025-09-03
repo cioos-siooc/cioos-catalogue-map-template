@@ -1,6 +1,6 @@
 # 🗺️ cioos-catalogue-map-template
 
-A web application that displays geospatial datasets from a CKAN repository on an interactive map. Built with Next.js, React and Leaflet, and hosted on **GitHub Pages**.
+A web application that displays geospatial datasets from a CIOOS CKAN repository on an interactive map. Built with Next.js, React and Leaflet, and hosted on **GitHub Pages**.
 
 ## 🔗 Live Site
 
