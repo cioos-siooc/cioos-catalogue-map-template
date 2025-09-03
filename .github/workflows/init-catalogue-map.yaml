@@ -28,7 +28,9 @@ jobs:
             github.rest.issues.create(issue)
       - name: Format readme with repository name
         run: |
-          sed -i 's|cioos-catalogue-map-template|${{ github.repository }}|g' README.md
+          sed -i 's|# cioos-catalogue-map-template|# ${{ github.repository }}|g' README.md
+          PAGES_URL=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.html_url')
+          sed -i "s|https://cioos-siooc.github.io/cioos-catalogue-map-template|$PAGES_URL|g" README.md
       - name: Cleanup repository initialization files
         run: |
           rm -rf .github/workflows/init-catalogue-map.yaml
