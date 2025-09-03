@@ -44,4 +44,4 @@ You don’t need to run a local build. Pushing changes is enough to trigger a ne
    - [ ] [public/a-propos.md](../../../public/a-propos.md)
  - [ ] Activate Github Pages
  - [ ] Confirm Catalogue Map is now available.
- - [ ] [optional] Redirect Map to external URL
+ - [ ] *optional* Redirect Map to external URL
