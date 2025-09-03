@@ -26,9 +26,9 @@ Deployment is handled by a GitHub Action that builds with your config and assets
 
 Workflow: `.github/workflows/deploy-map.yaml`
 
-- Triggers on pushes to `main` and `development`.
+- Triggers on pushes to `main` or manual dispatched via [Gitub Action page](../../actions/workflows/deploy-map.yaml).
 - Uses GitHub Pages with OIDC (permissions: `id-token: write`, `pages: write`, `contents: read`).
-- Deploys via a composite action (`ogsl-slgo/ogsl-nextjs-map-template@feature/add-github-composite-action`) that:
+- Deploys via a composite action (`cioos-siooc/cioos-catalogue-map-base@main`) that:
   - Consumes your `config.yaml` and assets under `public/`.
   - Builds the site using the shared base project.
   - Publishes to the `github-pages` environment. The Pages URL is exposed as `steps.deployment.outputs.page_url`.
