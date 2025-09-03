@@ -16,27 +16,23 @@ jobs:
           script: |
             const fs = require('fs')
             // Read the issue body from a file
-            const issueBody = fs.readFileSync('.github/ISSUE_TEMPLATE/init-data-repository-body.md', 'utf8')
+            const issueBody = fs.readFileSync('.github/ISSUE_TEMPLATE/init-catalogue-map.md', 'utf8')
 
             // Create the issue
             const issue = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'Initialize dataset repository',
+              title: 'Initialize Catalogue Map',
               body: issueBody,
             }
             github.rest.issues.create(issue)
       - name: Format readme with repository name
         run: |
-          sed -i 's|# dataset-title|# ${{ github.repository }}|g' README.md
-      - name: Format CHANGELOG
-        run: |
-          current_date=$(date +'%Y-%m-%d')
-          sed -i 's|yyyy-mm-dd|$current_date|g' CHANGELOG.md
+          sed -i 's|cioos-catalogue-map-template|${{ github.repository }}|g' README.md
       - name: Cleanup repository initialization files
         run: |
           rm -rf .github/workflows/init-dataset-repo.yaml
-          rm -rf .github/ISSUE_TEMPLATE/init-data-repository-body.md
+          rm -rf .github/ISSUE_TEMPLATE/init-catalogue-map.md
           sed -i 's|# hakai-dataset-repository-template|# ${{ github.repository }}|g' README.md
       - name: Change CODEOWNER to github actor
         run: |
