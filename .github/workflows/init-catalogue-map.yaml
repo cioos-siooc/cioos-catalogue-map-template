@@ -27,6 +27,8 @@ jobs:
             }
             github.rest.issues.create(issue)
       - name: Format readme with repository name
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           sed -i 's|# cioos-catalogue-map-template|# ${{ github.repository }}|g' README.md
           PAGES_URL=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.html_url')
