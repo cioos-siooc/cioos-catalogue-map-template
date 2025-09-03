@@ -39,7 +39,7 @@ You don’t need to run a local build. Pushing changes is enough to trigger a ne
 - `main_logo` and `bottom_logo`: One or more logo entries with `url`, `mode` (light/dark), optional `lang`, `alt`, and optional sizing/class.
 - `basemaps`: List of base layers with localized names, tile URL templates, attribution, and options such as `checked`/`maxZoom`.
 
-2) Add assets under `public/`:
+2) Add assets under `public/`:w
 
 - Place images in folders like `public/Images/...` and reference them in `config.yaml` with absolute paths such as `/Images/cioos-national_EN_W.svg-.png`.
 - Ensure paths are case-sensitive and exist (e.g., `favicon` defaults to `/images/favicon.ico`; create `public/images/` and put your file there or update the path).
