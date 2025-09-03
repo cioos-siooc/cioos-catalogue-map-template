@@ -31,9 +31,8 @@ jobs:
           sed -i 's|cioos-catalogue-map-template|${{ github.repository }}|g' README.md
       - name: Cleanup repository initialization files
         run: |
-          rm -rf .github/workflows/init-dataset-repo.yaml
+          rm -rf .github/workflows/init-catalogue-map.yaml
           rm -rf .github/ISSUE_TEMPLATE/init-catalogue-map.md
-          sed -i 's|# hakai-dataset-repository-template|# ${{ github.repository }}|g' README.md
       - name: Change CODEOWNER to github actor
         run: |
           echo "* @$GITHUB_ACTOR" > CODEOWNERS
