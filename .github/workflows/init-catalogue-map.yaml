@@ -32,6 +32,7 @@ jobs:
               repo: context.repo.repo,
               title: 'Initialize Catalogue Map',
               body: issueBody,
+              assignees: [context.actor]
             }
             github.rest.issues.create(issue)
       - name: Cleanup repository initialization files
