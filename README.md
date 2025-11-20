@@ -4,7 +4,7 @@ A web application that displays geospatial datasets from a CIOOS CKAN repository
 
 ## Get started!
 
-Refer to [issue #1](issues/1) for the full set of steps to manage a map deployment.
+Refer to [issue #1](issues/1) for the full set of steps to manage a map deployment. For more details about the different configurations, see [CONFIG.md](CONFIG.md).
 
 ## 🔗 Live Site
 
