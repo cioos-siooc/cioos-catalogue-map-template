@@ -76,16 +76,16 @@ This document explains all the configuration options available in [config.yaml](
 
 ### Basemaps & Overlays
 
-| Property                 | Type    | Required | Default | Description                                   |
-| ------------------------ | ------- | -------- | ------- | --------------------------------------------- |
-| `basemaps[].name.{lang}` | String  | Yes      | -       | Display name per locale.                      |
-| `basemaps[].key`         | String  | Yes      | -       | Unique identifier key.                        |
-| `basemaps[].url`         | String  | Yes      | -       | Tile URL template.                            |
-| `basemaps[].attribution` | String  | Yes      | -       | Required provider attribution.                |
-| `basemaps[].checked`     | Boolean | No       | `false` | Pre-selected basemap.                         |
-| `basemaps[].maxZoom`     | Number  | No       | -       | Max zoom extent.                              |
-| `basemaps[].minZoom`     | Number  | No       | `0`     | Min zoom extent.                              |
-| `overlays[].*`           | —       | No       | -       | Same structure as basemaps; stackable layers. |
+| Property                 | Type    | Required | Default | Description                                                            |
+| ------------------------ | ------- | -------- | ------- | ---------------------------------------------------------------------- |
+| `basemaps[].name.{lang}` | String  | Yes      | -       | Display name per locale.                                               |
+| `basemaps[].key`         | String  | Yes      | -       | Unique identifier key.                                                 |
+| `basemaps[].url`         | String  | Yes      | -       | Raster tile URL template.                                              |
+| `basemaps[].attribution` | String  | Yes      | -       | Required provider attribution, shown in the map's attribution popover. |
+| `basemaps[].checked`     | Boolean | No       | `false` | Pre-selected basemap.                                                  |
+| `basemaps[].maxZoom`     | Number  | No       | -       | Max zoom extent.                                                       |
+| `basemaps[].minZoom`     | Number  | No       | `0`     | Min zoom extent.                                                       |
+| `overlays[].*`           | —       | No       | -       | Same structure as basemaps; stackable layers.                          |
 
 ### Pages
 
@@ -102,6 +102,7 @@ This document explains all the configuration options available in [config.yaml](
 - `banner.message` required if `banner.enabled` is true.
 - Logo arrays require at least one entry for `main_logo`.
 - Basemap properties also apply to overlays unless otherwise noted.
+- Every basemap is a raster tile layer (`url` + `attribution` are both required). Bilingual place labels are rendered separately, on top of every basemap, from OpenFreeMap vector tiles — no basemap-level opt-in needed.
 - † For each page, supply at least one of `markdown_content` or `content` per locale; markdown takes precedence.
 
 ## Table of Contents
@@ -504,7 +505,7 @@ Unique identifier for the basemap.
 **Required:** Yes
 **Example:** `"https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}"`
 
-Tile server URL template. Use `{z}`, `{y}`, `{x}` placeholders for zoom and tile coordinates.
+Raster tile server URL template. Use `{z}`, `{y}`, `{x}` placeholders for zoom and tile coordinates.
 
 #### `attribution`
 
@@ -512,7 +513,7 @@ Tile server URL template. Use `{z}`, `{y}`, `{x}` placeholders for zoom and tile
 **Required:** Yes
 **Example:** `"Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS"`
 
-Attribution text to display for this basemap layer, crediting data sources.
+Attribution text to display for this basemap layer, crediting data sources. Shown in the map's attribution popover alongside the required OpenFreeMap/OpenStreetMap credit (used for the bilingual place labels drawn on top of every basemap).
 
 #### `checked`
 
@@ -530,7 +531,7 @@ Set to `true` to make this the default selected basemap on initial load.
 
 Maximum zoom level available for this basemap. Prevents zooming beyond the available tile resolution.
 
-**Example:**
+**Example (vector `style` basemap, bilingual labels):**
 
 ```yaml
 basemaps:
@@ -538,9 +539,20 @@ basemaps:
       fr: "Bathymétrie"
       en: "Bathymetry"
     key: "bathymetry"
-    url: "https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}"
-    attribution: "Tiles &copy; Esri"
+    style: "OCEAN"
     checked: true
+```
+
+**Example (raster `url` basemap):**
+
+```yaml
+basemaps:
+  - name:
+      fr: "Satellite"
+      en: "Satellite"
+    key: "satellite"
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+    attribution: "Tiles &copy; Esri"
     maxZoom: 10
 ```
 
@@ -548,11 +560,19 @@ basemaps:
 
 ## Overlays
 
-The `overlays` section defines transparent map layers that can be toggled on/off over the basemap.
+The `overlays` section defines transparent map layers that can be toggled on/off over the basemap. It's empty by default (`overlays: []`) — bilingual place/water/landform labels are now intrinsic to the `style`-based basemap (see [Basemaps](#basemaps) above) rather than a separate per-language overlay pair.
 
 ### Overlay Properties
 
-Overlays use the same properties as basemaps (see above), with the same structure and options.
+Overlays use the same properties as basemaps (see above), with the same structure and options, plus one overlay-only property:
+
+#### `lang`
+
+**Type:** String (`en` | `fr`)
+**Required:** No
+**Example:** `"fr"`
+
+Restricts this overlay to a single site language (same convention as `main_logo[].lang`). An overlay with `lang` set only appears in the layer control — and only loads its tiles — when the site language matches; overlays with no `lang` always show, in every language. Use this for a genuinely language-specific data overlay (not for basemap labels, which no longer need this pattern).
 
 **Example:**
 
